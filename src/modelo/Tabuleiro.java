@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Tabuleiro {
+
 	private int jogo[][] = new int[3][3];
+	private int custoDeExpansao;
 
 	/**
 	 * @param jogo
@@ -14,7 +16,7 @@ public class Tabuleiro {
 		super();
 		this.jogo = jogo;
 	}
-	
+
 	public Tabuleiro() {
 	}
 
@@ -53,6 +55,18 @@ public class Tabuleiro {
 		}
 	}
 
+	public void inicializaDirecionado() {
+		jogo[0][0] = 1;
+		jogo[0][1] = 2;
+		jogo[0][2] = 3;
+		jogo[1][0] = -1;
+		jogo[1][1] = 5;
+		jogo[1][2] = 6;
+		jogo[2][0] = 4;
+		jogo[2][1] = 7;
+		jogo[2][2] = 8;
+	}
+
 	public int numero1a3(){
 		Random gerador = new Random();
 		return gerador.nextInt(3);
@@ -62,7 +76,7 @@ public class Tabuleiro {
 		Random gerador = new Random();
 		return gerador.nextInt(8)+1;
 	}
-	
+
 	public void printTabuleiro() {
 		for (int i = 0; i < jogo.length; i++) {
 			for (int j = 0; j < jogo.length; j++) {
@@ -71,7 +85,7 @@ public class Tabuleiro {
 			System.out.println();
 		}
 	}
-	
+
 	public int linhaElementoVazio() {
 		for (int i = 0; i < jogo.length; i++) {
 			for (int j = 0; j < jogo.length; j++) {
@@ -82,7 +96,7 @@ public class Tabuleiro {
 		}
 		return 1;
 	}
-	
+
 	public int colunaElementoVazio() {
 		for (int i = 0; i < jogo.length; i++) {
 			for (int j = 0; j < jogo.length; j++) {
@@ -93,7 +107,7 @@ public class Tabuleiro {
 		}
 		return 1;
 	}
-	
+
 	public List<Tabuleiro> tabuleirosPossiveis(){
 		List<Tabuleiro> listaTabuleiros = new ArrayList<Tabuleiro>();
 		int linha = linhaElementoVazio(), coluna = colunaElementoVazio();
@@ -131,12 +145,73 @@ public class Tabuleiro {
 		}
 		return listaTabuleiros;
 	}
-	
+
 	public void copiaJogo(int jogo[][]) {
 		for (int i = 0; i < jogo.length; i++) {
 			for (int j = 0; j < jogo.length; j++) {
 				jogo[i][j] = this.jogo[i][j];
 			}
 		}
+	}
+
+	public int distanciaManhattan() {
+		int somaDistancia = 0;
+		for (int i = 0; i < jogo.length; i++) {
+			for (int j = 0; j < jogo.length; j++) {
+				int linha, coluna;
+				if(jogo[i][j] == -1) {
+					linha = 2;
+					coluna = 2;
+				}else {
+					if(jogo[i][j] >= 1 && jogo[i][j] <= 3) {
+						linha = 0;
+					}else if(jogo[i][j] >= 4 && jogo[i][j] <= 6) {
+						linha = 1;
+					}else {
+						linha = 2;
+					}
+
+					if (jogo[i][j] == 1 || jogo[i][j] == 4 || jogo[i][j] == 7) {
+						coluna = 0;
+					}else if(jogo[i][j] == 2 || jogo[i][j] == 5 || jogo[i][j] == 8) {
+						coluna = 1;
+					}else {
+						coluna = 2;
+					}
+				}
+				somaDistancia = somaDistancia + (Math.abs(i - linha) + Math.abs(j - coluna));
+			}
+		}
+		return somaDistancia;
+	}
+
+	public int custoTotal() {
+		return custoDeExpansao + distanciaManhattan();
+	}
+
+	public boolean testeObjetivo() {
+		boolean teste = true;
+		for (int i = 0; i < jogo.length; i++) {
+			for (int j = 0; j < jogo.length; j++) {
+				if(i == 2 && j == 2) {
+					if(jogo[i][j] != -1) {
+						teste = false;
+					}
+				}else {
+					if (jogo[i][j] != (1 + (i * 3) + j)) {
+						teste = false;
+					}
+				}
+			}
+		}
+		return teste;
+	}
+
+	public int getCustoDeExpansao() {
+		return custoDeExpansao;
+	}
+
+	public void setCustoDeExpansao(int custoDeExpansao) {
+		this.custoDeExpansao = custoDeExpansao;
 	}
 }
