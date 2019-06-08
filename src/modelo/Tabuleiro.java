@@ -8,6 +8,7 @@ public class Tabuleiro {
 
 	private int jogo[][] = new int[3][3];
 	private int custoDeExpansao;
+	private int profundidade;
 
 	/**
 	 * @param jogo
@@ -56,15 +57,15 @@ public class Tabuleiro {
 	}
 
 	public void inicializaDirecionado() {
-		jogo[0][0] = 1;
-		jogo[0][1] = 2;
-		jogo[0][2] = 3;
-		jogo[1][0] = -1;
+		jogo[0][0] = 2;
+		jogo[0][1] = 3;
+		jogo[0][2] = -1;
+		jogo[1][0] = 1;
 		jogo[1][1] = 5;
 		jogo[1][2] = 6;
-		jogo[2][0] = 4;
-		jogo[2][1] = 7;
-		jogo[2][2] = 8;
+		jogo[2][0] = 7;
+		jogo[2][1] = 8;
+		jogo[2][2] = 4;
 	}
 
 	public int numero1a3(){
@@ -213,5 +214,13 @@ public class Tabuleiro {
 
 	public void setCustoDeExpansao(int custoDeExpansao) {
 		this.custoDeExpansao = custoDeExpansao;
+	}
+
+	public int getProfundidade() {
+		return profundidade;
+	}
+
+	public void setProfundidade(int profundidade) {
+		this.profundidade = profundidade;
 	}
 }
